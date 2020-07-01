@@ -10,7 +10,10 @@ module.exports = function(grunt) {
   var path = require("path").posix;
   var shell = require("shelljs");
   var mime = require("mime");
-  
+
+  // load environment variables from .env
+  require('dotenv').config()
+
   grunt.registerTask("sync", "Sync to S3 for assets", function(target = "stage") {
     var done = this.async();
 
