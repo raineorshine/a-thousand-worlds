@@ -3,7 +3,7 @@ var imageSize = promisify(require("image-size"));
 var { typogrify } = require("typogr");
 
 var normalizeTags = function(tags) {
-  return tags
+  return (tags || '')
     .toLowerCase()
     .replace(/['’]/g, "’")
     .split(/\s*\|\s*/)
@@ -29,7 +29,7 @@ var shelve = async function(grunt) {
       book.year = year;
       book.tags = normalizeTags(book.tags);
       book.text = grunt.template.renderMarkdown(book.text || "");
-      "title author reviewer text".split(" ").forEach(p => book[p] = book[p].toString().trim());
+      "title author reviewer text".split(" ").forEach(p => book[p] = (book[p] || '').toString().trim());
       var isbn = String(book.isbn).trim();
       if (isbn.length == 9) isbn = "0" + isbn;
       book.isbn = isbn;
