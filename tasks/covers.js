@@ -11,10 +11,41 @@ module.exports = function(grunt) {
     return new Promise(ok => setTimeout(ok, delay));
   };
 
+  var getCoverFromBakerTaylor = async function({ isbn, seamus, title, year }) {
+    var params = {
+      Value: isbn,
+      UserID: process.env.BAKER_TAYLOR_API_USERID,
+      Password: process.env.BAKER_TAYLOR_API_PASSWORD,
+      Return: "T",
+      Type: "L"
+    }
+    var response = await fetch(getEndpoint(params));
+    var contents = await response.buffer();
+    // if it's too small, let's get it from Seamus instead
+    if (contents.length < 5000) {
+      console.log(`Baker & Taylor bailed on ${isbn}, pulling Seamus image...`);
+      response = await fetch(`https://npr.org/books/titles/${seamus}`);
+      var page = await response.text();
+      var $ = cheerio.load(page);
+      var tag = $(".bucketwrap.book .img, .bucketwrap.bookedition .img");
+      if (!tag.length) {
+        console.log(`Unable to load an image from Seamus for "${title}" (${year})`);
+        return;
+      }
+      var src = tag[0].attribs["data-original"] || tag[0].attribs.src;
+      src = src.replace(/-s\d+.*\.jpg/, "-s400-c70.jpg");
+      var image = await fetch(src);
+      contents = await image.buffer();
+    }
+
+    return contents
+  };
+
   // grunt doesn't like top-level async functions
   var getCovers = async function(books) {
 
     var limit = 10;
+    console.log('books', books)
 
     for (var i = 0; i < books.length; i += limit) {
       console.log(`Requesting books ${i}-${i + limit}`);
@@ -24,31 +55,7 @@ module.exports = function(grunt) {
         if (!isbn) return;
         var path = `src/assets/covers/${isbn}.jpg`
         if (grunt.file.exists(path)) return true;
-        var params = {
-          Value: isbn,
-          UserID: process.env.BAKER_TAYLOR_API_USERID,
-          Password: process.env.BAKER_TAYLOR_API_PASSWORD,
-          Return: "T",
-          Type: "L"
-        }
-        var response = await fetch(getEndpoint(params));
-        var contents = await response.buffer();
-        // if it's too small, let's get it from Seamus instead
-        if (contents.length < 5000) {
-          console.log(`Baker & Taylor bailed on ${isbn}, pulling Seamus image...`);
-          response = await fetch(`https://npr.org/books/titles/${seamus}`);
-          var page = await response.text();
-          var $ = cheerio.load(page);
-          var tag = $(".bucketwrap.book .img, .bucketwrap.bookedition .img");
-          if (!tag.length) {
-            console.log(`Unable to load an image from Seamus for "${book.title}" (${book.year})`);
-            return;
-          }
-          var src = tag[0].attribs["data-original"] || tag[0].attribs.src;
-          src = src.replace(/-s\d+.*\.jpg/, "-s400-c70.jpg");
-          var image = await fetch(src);
-          contents = await image.buffer();
-        }
+        const contents = await getCoverFromBakerTaylor(book);
         await fs.writeFile(path, contents);
         await wait(1000);
       });
