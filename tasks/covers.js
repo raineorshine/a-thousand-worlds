@@ -67,6 +67,6 @@ module.exports = function(grunt) {
     // get all books from all sheets
     var books = grunt.data.shelf;
     getCovers(books).then(done);
-    
+
   });
 };
