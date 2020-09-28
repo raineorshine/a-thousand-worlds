@@ -2,6 +2,7 @@ var fetch = require("node-fetch");
 var fs = require("fs").promises;
 var qs = require("querystring");
 var cheerio = require("cheerio");
+var bookcovers = require("bookcovers");
 
 var getEndpoint = query => `http://images.btol.com/ContentCafe/Jacket.aspx?${qs.stringify(query)}`;
 
@@ -41,21 +42,39 @@ module.exports = function(grunt) {
     return contents
   };
 
+  // fetch cover image from bookcovers API
+  // https://github.com/e-e-e/book-covers-api
+  var getCoverFromBookcovers = async function(book) {
+    console.log(`Fetching book cover url: ${book.isbn}`)
+    const bookcoversResult = await bookcovers.withIsbn(book.isbn)
+    const amazonSizes = Object.keys(bookcoversResult.amazon)
+    const largestAmazonCover = Math.max.apply(null, amazonSizes.map(s => parseFloat(s, 10)))
+    const url = bookcoversResult.amazon[largestAmazonCover] ||
+      bookcoversResult.amazon['2x'] ||
+      bookcoversResult.openLibrary.large ||
+      bookcoversResult.amazon['1.5x'] ||
+      bookcoversResult.openLibrary.medium ||
+      bookcoversResult.amazon['1x'] ||
+      bookcoversResult.openLibrary.small
+    console.log(`Fetching book cover: ${url}`)
+    const response = await fetch(url);
+    const contents = await response.buffer();
+    return { contents, url };
+  };
+
   // grunt doesn't like top-level async functions
   var getCovers = async function(books) {
 
     var limit = 10;
-    console.log('books', books)
 
     for (var i = 0; i < books.length; i += limit) {
-      console.log(`Requesting books ${i}-${i + limit}`);
+      console.log(`Requesting books ${i}-${i + limit - 1}`);
       var batch = books.slice(i, i + limit);
       var requests = batch.map(async function(book) {
-        var { isbn, seamus } = book;
-        if (!isbn) return;
-        var path = `src/assets/covers/${isbn}.jpg`
-        if (grunt.file.exists(path)) return true;
-        const contents = await getCoverFromBakerTaylor(book);
+        const pathWithoutExtension = `src/assets/covers/${book.isbn}`
+        if (grunt.file.exists(pathWithoutExtension + '.jpg') || grunt.file.exists(pathWithoutExtension + '.webp')) return true;
+        const { contents, url } = await getCoverFromBookcovers(book);
+        const path = pathWithoutExtension + (url.includes('amazon.com') ? '.webp' : '.jpg')
         await fs.writeFile(path, contents);
         await wait(1000);
       });
@@ -63,7 +82,7 @@ module.exports = function(grunt) {
     }
   };
 
-  grunt.registerTask("covers", "Get cover images from Baker & Taylor", function() {
+  grunt.registerTask("covers", "Get cover images from bookcovers API", function() {
 
     var done = this.async();
 
