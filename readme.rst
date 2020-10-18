@@ -8,9 +8,8 @@ Getting started
 
 To run this project you will need:
 
-* Node installed (preferably with NVM or another version manager)
-* The Grunt CLI (install globally with ``npm i -g grunt-cli``)
 * Git
+* Node (preferably with NVM or another version manager)
 
 With those installed, you can then set the project up using your terminal:
 
