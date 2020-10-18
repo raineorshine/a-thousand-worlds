@@ -27,17 +27,6 @@
   "docs": {
     "about": "1Ib3Kq7okIe-7Hk6sfI6N24DpfuqpZ8hdq5rYoIERvzI"
   },
-  "analytics": {
-    "topicIDs": [
-      1032,
-      1008
-    ],
-    "primaryTopic": "Books",
-    "secondaryTopics": [
-      "Books",
-      "Arts &amp; Life"
-    ]
-  },
   "embedded": false,
   "production": true
 }
