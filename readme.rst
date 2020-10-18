@@ -1,7 +1,7 @@
-book-concierge
+A Thousand Worlds
 ======================================================
 
-This news app is built on our `interactive template <https://github.com/nprapps/interactive-template>`_. Check the readme for that template for more details about the structure and mechanics of the app, as well as how to start your own project.
+Based on https://github.com/nprapps/book-concierge
 
 Getting started
 ---------------
@@ -14,11 +14,12 @@ To run this project you will need:
 
 With those installed, you can then set the project up using your terminal:
 
-#. Pull the code - ``git clone git@github.com:nprapps/book-concierge``
-#. Enter the project folder - ``cd book-concierge``
+#. Pull the code - ``git clone git@github.com:raineorshine/a-thousand-worlds``
+#. Enter the project folder - ``cd a-thousand-worlds``
 #. Install dependencies from NPM - ``npm install``
 #. Pull data and covers: ``grunt update``
 #. Start the server - ``grunt``
+#. Publish - ``grunt publish:stage``
 
 Running tasks
 -------------
@@ -27,17 +28,24 @@ Like all interactive-template projects, this application uses the Grunt task run
 
 Common tasks that you may want to run include:
 
-* ``sheets`` - updates local data from Google Sheets
+* ``covers`` - downloads book covers from the book cover API
+* ``cron`` - runs builds and deploys on a timer (see ``tasks/cron.js`` for details)
+* ``default`` - builds all files, starts the dev server, and watches for changes
 * ``docs`` - updates local data from Google Docs
 * ``google-auth`` - authenticates your account against Google for private files
-* ``static`` - rebuilds files but doesn't start the dev server
-* ``cron`` - runs builds and deploys on a timer (see ``tasks/cron.js`` for details)
-* ``shelve`` - puts books into a common data structure, and builds out .json files in /build for AJAX
-* ``publish`` - uploads files to the staging S3 bucket
+* ``publish`` - deploys the build folder to surge
+
+  * ``publish:stage`` uploads to staging
+
+* ``publish-s3`` - uploads files to the staging S3 bucket
 
   * ``publish:live`` uploads to production
   * ``publish:simulated`` does a dry run of uploaded files and their compressed sizes
 
+* ``scrape`` - downloads book metadata from various service endpoints
+* ``sheets`` - updates local data from Google Sheets
+* ``shelve`` - puts books into a common data structure, and builds out .json files in /build for AJAX
+* ``static`` - builds all files
 * ``sync`` - gets/sets cover files from S3 (publish will not push them)
 * ``validate`` - runs various integrity tests on the data. You can specify specific tests with the ``--check`` argument:
 
@@ -48,9 +56,6 @@ Common tasks that you may want to run include:
   * ``reviewers`` - checks that all reviewers have a book on the shelf somewhere
   * ``reviewed`` - checks that all books have a matching reviewer
   * ``links`` - identifies orphan links (no book on the shelf matches its metadata)
-
-* ``scrape`` - downloads book metadata from various service endpoints
-* ``covers`` - downloads book covers from Baker & Taylor and Seamus
 
 Analytics
 ---------
