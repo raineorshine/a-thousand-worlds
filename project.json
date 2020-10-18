@@ -15,9 +15,9 @@
   "scripts": {
     "src/js/main.js": "build/app.js"
   },
-  "title": "NPR's Book Concierge",
+  "title": "A Thousand Worlds : Colorful Reads X Colorful People",
   "description": "",
-  "url": "https://apps.npr.org/best-books/",
+  "url": "https://athousandworlds.org",
   "image": "assets/social.jpg",
   "sheets": [
     "1vrPtb6ZqC81PuRpOgt4DyhGGEgQHEuZDND4dysLNPPM"

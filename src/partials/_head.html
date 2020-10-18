@@ -1,7 +1,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 
-<title><%= project.title %> : NPR</title>
+<title><%= project.title %> : <%= project.description %></title>
 
 <!-- Favicon -->
 <link rel="apple-touch-icon" sizes="180x180" href="https://media.npr.org/templates/favicon/favicon-180x180.png" />
@@ -54,11 +54,11 @@
   },
   "author": {
     "@type": "Person",
-    "name": "NPR Staff"
+    "name": "Staff"
   },
   "publisher": {
     "@type": "Organization",
-    "name": "NPR",
+    "name": "A Thousand Worlds",
     "logo": {
       "@type": "ImageObject",
       "url": "<%= project.url %>assets/logo.png",
@@ -76,7 +76,7 @@
 
 <%
 // if !project.embedded...
-} 
+}
 %>
 
 <%= t.include("partials/_webfonts.html") %>
