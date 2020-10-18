@@ -15,8 +15,10 @@
   "scripts": {
     "src/js/main.js": "build/app.js"
   },
-  "title": "A Thousand Worlds : Colorful Reads X Colorful People",
+  "title": "A Thousand Worlds",
+  "subtitle": "Colorful Reads X Colorful People",
   "description": "",
+  "startYear": 2020,
   "url": "https://athousandworlds.org",
   "image": "assets/social.jpg",
   "sheets": [

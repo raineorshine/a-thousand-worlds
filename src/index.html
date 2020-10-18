@@ -92,7 +92,7 @@
       <div class="book-detail"></div>
     </main>
 
-    <%= t.include("partials/_footer.html", { content: t.include("_footer.html") }) %>
+    <%= t.include("partials/_footer.html", { content: t.include("_footer.html"), project: grunt.data.json.project }) %>
 
     <script>
 window.conciergeData = {

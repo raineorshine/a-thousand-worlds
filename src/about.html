@@ -27,7 +27,7 @@
       </div>
     </main>
 
-    <%= t.include("partials/_footer.html", { content: t.include("_footer.html") }) %>
+    <%= t.include("partials/_footer.html", { content: t.include("_footer.html"), project: grunt.data.json.project }) %>
 
     <%= t.include("partials/_analytics.html") %>
   </body>
