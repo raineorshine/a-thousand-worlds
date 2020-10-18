@@ -14,17 +14,19 @@
       <h1><%= json.copy.title %></h1>
 
       <p class="back-link">
-        <a href="index.html">&lsaquo; Back to books</a>
+        <a href="/">&lsaquo; Back to books</a>
       </p>
 
     </header>
 
     <main class="about">
-      <%= t.renderMarkdown(archieml.about.content) %>
+      <%= t.renderMarkdown(archieml.about.content.replace(/\n/g, '<br>')) %>
 
+      <% if (archieml.about.credits) { %>
       <div class="credits">
         <%= t.renderMarkdown(archieml.about.credits) %>
       </div>
+      <% } %>
     </main>
 
     <%= t.include("partials/_footer.html", { content: t.include("_footer.html"), project: grunt.data.json.project }) %>
