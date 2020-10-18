@@ -13,6 +13,7 @@ module.exports = function(grunt) {
     "archieml",
     "shelve",
     "validate",
+    "covers",
   ]);
   grunt.registerTask("template", "Build HTML from content/templates", [
     "content",
