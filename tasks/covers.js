@@ -62,7 +62,6 @@ module.exports = function(grunt) {
     return { contents, url };
   };
 
-  // grunt doesn't like top-level async functions
   var getCovers = async function(books) {
 
     var limit = 10;
@@ -91,7 +90,8 @@ module.exports = function(grunt) {
     grunt.file.mkdir("src/assets/covers");
 
     // get all books from all sheets
-    var books = grunt.data.shelf;
+    var books = grunt.data.shelf
+      .filter(book => book.isbn);
     getCovers(books).then(done);
 
   });

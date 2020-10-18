@@ -30,20 +30,22 @@ var shelve = async function(grunt) {
       book.tags = normalizeTags(book.tags);
       book.text = grunt.template.renderMarkdown(book.text || "");
       "title author reviewer text".split(" ").forEach(p => book[p] = (book[p] || '').toString().trim());
-      var isbn = String(book.isbn).trim();
-      if (isbn.length == 9) isbn = "0" + isbn;
-      book.isbn = isbn;
+      if (book.isbn) {
+        var isbn = String(book.isbn).trim();
+        if (isbn.length == 9) isbn = "0" + isbn;
+        book.isbn = isbn;
 
-      // create 13-digit ISBN
-      if (book.isbn.length == 13) {
-        book.isbn13 = book.isbn;
-      } else {
-        var isbn13 = "978" + book.isbn.slice(0, 9);
-        var odds = [1, 3, 5, 7, 9, 11].map(n => Number(isbn13[n])).reduce((acc, n) => n + acc) * 3;
-        var evens = [0, 2, 4, 6, 8, 10].map(n => Number(isbn13[n])).reduce((acc, n) => n + acc);
-        var remainder = (odds + evens) % 10;
-        var check = remainder ? 10 - remainder : 0;
-        book.isbn13 = isbn13 + check;
+        // create 13-digit ISBN
+        if (book.isbn.length == 13) {
+          book.isbn13 = book.isbn;
+        } else {
+          var isbn13 = "978" + book.isbn.slice(0, 9);
+          var odds = [1, 3, 5, 7, 9, 11].map(n => Number(isbn13[n])).reduce((acc, n) => n + acc) * 3;
+          var evens = [0, 2, 4, 6, 8, 10].map(n => Number(isbn13[n])).reduce((acc, n) => n + acc);
+          var remainder = (odds + evens) % 10;
+          var check = remainder ? 10 - remainder : 0;
+          book.isbn13 = isbn13 + check;
+        }
       }
 
       // join against links, reviewers
