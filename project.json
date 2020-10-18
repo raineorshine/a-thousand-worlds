@@ -1,4 +1,8 @@
 {
+  "surge": {
+    "stage": "athousandworlds-staging.surge.sh",
+    "live": "athousandworlds.surge.sh"
+  },
   "s3": {
     "stage": {
       "bucket": "bipocwebsite",
