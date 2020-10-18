@@ -2,8 +2,8 @@ var { promisify } = require("util");
 var imageSize = promisify(require("image-size"));
 var { typogrify } = require("typogr");
 
-var normalizeTags = function(tags) {
-  return (tags || '')
+var normalizeTags = function(tagString) {
+  return (tagString || '')
     .toLowerCase()
     .replace(/['’]/g, "’")
     .split(/\s*\|\s*/)
@@ -25,11 +25,16 @@ var shelve = async function(grunt) {
     var lookup = {};
     var links = grunt.data.json.links.filter(l => l.year == year);
     for (var book of collection) {
-      // normalize and trim
+
       book.year = year;
-      book.tags = normalizeTags(book.tags);
+
+      const tags = Array.isArray(book.tags) ? book.tags.join('|') : book.tags
+      book.tags = normalizeTags(tags);
+
       book.text = grunt.template.renderMarkdown(book.text || "");
+
       "title author reviewer text".split(" ").forEach(p => book[p] = (book[p] || '').toString().trim());
+
       if (book.isbn) {
         var isbn = String(book.isbn).trim();
         if (isbn.length == 9) isbn = "0" + isbn;
@@ -54,16 +59,20 @@ var shelve = async function(grunt) {
       // add smart quotes to the link text
       book.links.forEach(l => l.text = typogrify(l.text));
 
+      const webpExists = grunt.file.exists(`src/assets/covers/${book.isbn}.webp`);
+      book.coverType = webpExists ? 'webp' : 'jpg'
+
       var indexEntry = {
         title: book.title,
         author: book.author,
         dimensions: {},
         isbn: book.isbn,
         tags: book.tags,
-        id: book.id
+        id: book.id,
+        coverType: book.coverType,
       };
       try {
-        var size = await imageSize(`src/assets/covers/${book.isbn}.jpg`);
+        var size = await imageSize(`src/assets/covers/${book.isbn}.${book.coverType}`);
         indexEntry.dimensions = {
           width: size.width,
           height: size.height

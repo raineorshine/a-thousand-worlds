@@ -7,8 +7,8 @@
   href="#year=<%= book.year %>&book=<%= book.id %>"
   class="cover-link">
   <div class="cover-container" style="<%= aspect %>">
-    <img 
-      <%= nativeLazy ? "src" : "data-src" %>="./assets/covers/<%= book.isbn %>.jpg"
+    <img
+      <%= nativeLazy ? "src" : "data-src" %>="./assets/covers/<%= book.isbn %>.<%= book.coverType %>"
       class="cover"
       alt="<%= book.title %>"
       decoding="async"

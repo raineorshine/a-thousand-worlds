@@ -96,11 +96,11 @@ module.exports = function(grunt) {
     var passed = true;
     for (var book of grunt.data.shelf) {
       var { isbn, title, year } = book;
-      var coverPathBase = `src/assets/covers/${isbn}`;
-      const jpgExists = fs.existsSync(coverPathBase + '.jpg');
-      const webpExists = fs.existsSync(coverPathBase + '.webp');
+      var coverPathBase = `src/assets/covers/${isbn}.`;
+      const webpExists = fs.existsSync(coverPathBase + 'webp');
+      const jpgExists = webpExists ? undefined : fs.existsSync(coverPathBase + 'jpg');
 
-      if (!jpgExists && !webpExists) {
+      if (!webpExists && !jpgExists) {
         passed = false;
         error(`"${title}" (${year}) is missing its cover file.`);
       }
