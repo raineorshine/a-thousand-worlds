@@ -12,7 +12,7 @@ var url = require("url");
 module.exports = function(grunt) {
 
   grunt.loadNpmTasks("grunt-contrib-connect");
-  
+
   grunt.config.merge({
     connect: {
       dev: {
@@ -34,7 +34,7 @@ module.exports = function(grunt) {
               fs.readdir(dir, function(err, list) {
                 if (!err && list.indexOf(filename) == -1) {
                   response.statusCode = 404;
-                  response.end("<pre>            404 Not Found\n-this space intentionally left blank-</pre>");
+                  fs.createReadStream(base + '/404.html').pipe(response)
                 } else {
                   next();
                 }

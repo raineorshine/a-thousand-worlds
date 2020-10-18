@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <%= t.include("partials/_head.html", grunt.data.json) %>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <body>
+
+    <header class="hero">
+      <!-- <a href="https://npr.org/books" class="books-home">
+        <img src="./assets/logo-outline.svg" alt="A Thousand Worlds">
+        books
+      </a> -->
+      <h1>Oops! Page Not Found</h1>
+
+      <p class="back-link">
+        <a href="./">&lsaquo; Back to books</a>
+      </p>
+
+    </header>
+
+    <%= t.include("partials/_footer.html", { content: t.include("_footer.html"), project: grunt.data.json.project }) %>
+
+    <!-- t.include("partials/_analytics.html") -->
+  </body>
+</html>
