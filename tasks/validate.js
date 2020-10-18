@@ -1,5 +1,6 @@
 var fs = require("fs");
 var asyncFS = fs.promises;
+var chalk = require("chalk");
 var crypto = require("crypto");
 
 var checksum = function(filename, callback) {
@@ -11,6 +12,14 @@ var checksum = function(filename, callback) {
     });
     input.pipe(hash);
   });
+}
+
+var error = function(message) {
+  console.log(chalk.red(message))
+}
+
+var success = function(message) {
+  console.log(chalk.green(message))
 }
 
 module.exports = function(grunt) {
@@ -40,21 +49,26 @@ module.exports = function(grunt) {
     var yearIDs = {};
     var passed = true;
     for (var book of grunt.data.shelf) {
+      if (!book.isbn) {
+        passed = false;
+        error(`"${book.title}" (${book.year}) is missing an ISBN`);
+        continue;
+      }
       if (!book.id) {
         passed = false;
-        console.log(`"${book.title}" (${book.year}) lacks an ID`);
+        error(`"${book.title}" (${book.year}) lacks an ID`);
         continue;
       }
       if (!yearIDs[book.year]) yearIDs[book.year] = new Set();
       if (yearIDs[book.year].has(book.id)) {
         passed = false;
-        console.log(`Book #${book.id} in ${book.year} ("${book.title}") has a duplicate ID`);
+        error(`Book #${book.id} in ${book.year} ("${book.title}") has a duplicate ID`);
       }
       yearIDs[book.year].add(book.id);
       "title text reviewer tags isbn".split(" ").forEach(function(p) {
         if (!book[p]) {
           passed = false;
-          console.log(`Book #${book.id} (${book.year}) is missing property "${p}"`);
+          error(`Book #${book.id} (${book.year}) is missing property "${p}"`);
         }
       })
     }
@@ -71,7 +85,7 @@ module.exports = function(grunt) {
       if (stat.size < 4000) {
         // var digest = await checksum(file);
         passed = false;
-        console.log(`Cover ${f} is probably broken`);
+        error(`Cover ${f} is probably broken`);
       }
     }
     return passed;
@@ -87,7 +101,7 @@ module.exports = function(grunt) {
         await asyncFS.stat(coverPath);
       } catch (err) {
         passed = false;
-        console.error(`"${title}" (${year}) is missing its cover file.`);
+        error(`"${title}" (${year}) is missing its cover file.`);
       }
     }
     return passed;
@@ -109,7 +123,7 @@ module.exports = function(grunt) {
   var reviewed = async function() {
     // Do all books have a valid reviewer?
     var noReviewer = grunt.data.shelf.filter(b => !(b.reviewer in grunt.data.json.reviewers));
-    noReviewer.forEach(b => console.log(`Book "${b.title}" (${b.year}) doesn't have a valid reviewer (${b.reviewer}).`));
+    noReviewer.forEach(b => error(`Book "${b.title}" (${b.year}) doesn't have a valid reviewer (${b.reviewer}).`));
     return !noReviewer.length;
   };
 
@@ -129,7 +143,7 @@ module.exports = function(grunt) {
       if (!tasks || tasks.indexOf(k) > -1) {
         header(k);
         var pass = await validation[k]();
-        if (pass) console.log(`Tests passed for ${k}`);
+        if (pass) success(`Tests passed for ${k}`);
       }
     }
 
