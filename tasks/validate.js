@@ -68,7 +68,7 @@ module.exports = function(grunt) {
       "title text reviewer tags isbn".split(" ").forEach(function(p) {
         if (!book[p]) {
           passed = false;
-          error(`Book #${book.id} (${book.year}) is missing property "${p}"`);
+          error(`Book ${book.id}: ${book.title} (${book.year}) is missing property "${p}"`);
         }
       })
     }
@@ -96,10 +96,11 @@ module.exports = function(grunt) {
     var passed = true;
     for (var book of grunt.data.shelf) {
       var { isbn, title, year } = book;
-      var coverPath = `src/assets/covers/${isbn}.jpg`;
-      try {
-        await asyncFS.stat(coverPath);
-      } catch (err) {
+      var coverPathBase = `src/assets/covers/${isbn}`;
+      const jpgExists = fs.existsSync(coverPathBase + '.jpg');
+      const webpExists = fs.existsSync(coverPathBase + '.webp');
+
+      if (!jpgExists && !webpExists) {
         passed = false;
         error(`"${title}" (${year}) is missing its cover file.`);
       }
