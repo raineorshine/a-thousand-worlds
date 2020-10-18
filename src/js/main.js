@@ -39,6 +39,11 @@ var defaults = {
   year: 2019
 };
 
+const isEmail = s => /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(s)
+const isTwitterHandle = s => s.startsWith('@')
+const isMissingHttp = s => !s.startsWith('http')
+const isNotUrl = s => !s.includes('.')
+
 // hashes update filters (usually redundant) and render the main panel
 channel.on("hashchange", async function(params, pastParams = {}) {
   var bodyData = document.body.dataset;
@@ -75,7 +80,15 @@ channel.on("hashchange", async function(params, pastParams = {}) {
       reset: !pastParams.year // don't restore focus if this is the starting view
     });
     // look up the reviewer from the table
+    // convert twitter handles and www
     var reviewer = window.conciergeData.reviewers[book.reviewer] || {};
+    if (reviewer.link) {
+      reviewer.link = (isTwitterHandle(reviewer.link) ? 'https://twitter.com/'
+        : isEmail(reviewer.link) ? 'mailto:'
+        : isNotUrl(reviewer.link) ? 'https://twitter.com/@'
+        : isMissingHttp(reviewer.link) ? 'http://'
+        : '') + reviewer.link
+    }
     track("book-selected", `${book.title} by ${book.author}`);
     renderBook({ book, next, previous, back, hash, reviewer });
     document.body.setAttribute("data-mode", "book");
