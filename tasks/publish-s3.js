@@ -48,7 +48,7 @@ module.exports = function(grunt) {
     return list;
   };
 
-  grunt.registerTask("publish", "Pushes the build folder to S3", function(deploy) {
+  grunt.registerTask("publish-s3", "Pushes the build folder to S3", function(deploy) {
 
     var done = this.async();
 
@@ -121,7 +121,7 @@ module.exports = function(grunt) {
         if (deploy == "simulated") return next();
         s3.putObject(obj, next);
       }], c);
-      
+
     }, function(err) {
       if (err) return console.log(err);
       console.log("All files uploaded successfully");
