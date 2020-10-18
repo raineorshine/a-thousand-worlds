@@ -71,6 +71,7 @@ module.exports = function(grunt) {
           majorDimension: "ROWS"
         });
         var { values } = response.data;
+        if (!values) continue;
         var header = values.shift();
         var isKeyed = header.indexOf("key") > -1;
         var isValued = header.indexOf("value") > -1;
