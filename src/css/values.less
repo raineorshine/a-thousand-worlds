@@ -5,10 +5,21 @@
 @tablet-above: ~"(min-width: 769px)";
 
 // Fonts
+@din: DIN, Helvetica, sans-serif;
 @gotham: 'Gotham SSm', Helvetica, Arial, sans-serif;
 @knockout: 'Knockout 31 4r','Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 @sans: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 @serif: Georgia, "Times New Roman", Times, serif;
+
+@font-face {
+  font-family: DIN;
+  src: url("//static.parastorage.com/services/third-party/fonts/user-site-fonts/fonts/3e0b2cd7-9657-438b-b4af-e04122e8f1f7.eot?#iefix");
+  src: url("//static.parastorage.com/services/third-party/fonts/user-site-fonts/fonts/3e0b2cd7-9657-438b-b4af-e04122e8f1f7.eot?#iefix") format("eot"),url("//static.parastorage.com/services/third-party/fonts/user-site-fonts/fonts/bc176270-17fa-4c78-a343-9fe52824e501.woff") format("woff"),url("//static.parastorage.com/services/third-party/fonts/user-site-fonts/fonts/3516f91d-ac48-42cd-acfe-1be691152cc4.ttf") format("truetype"),url("//static.parastorage.com/services/third-party/fonts/user-site-fonts/fonts/d1b1e866-a411-42ba-8f75-72bf28e23694.svg#d1b1e866-a411-42ba-8f75-72bf28e23694") format("svg");
+}
+
+.din() {
+  font-family: @din;
+}
 
 .gotham() {
     font-family: @gotham;
@@ -38,6 +49,7 @@
 // colors
 @accent-dark: #4774CC;
 @accent-light: #bccae5;
+@magenta: rgb(255, 0, 238);
 
 @rigorous: #d62021;
 @unbiased: #000005;

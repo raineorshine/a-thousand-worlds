@@ -1,7 +1,21 @@
+.about-page {
+  background: @header-2020;
+
+  header.hero {
+    background: @header-2020;
+  }
+
+  footer {
+    background: @header-2020;
+    .npr ul {
+      color: white;
+    }
+  }
+}
+
 main.about {
   padding: 33px 20px;
-  max-width: 650px;
-  margin: auto;
+  margin: auto 50px;
 
   h2 {
     .gotham();
@@ -13,9 +27,13 @@ main.about {
   p + h2 { margin-top: 1.5em; }
 
   p, li {
-    color: #333;
     font: 17px/1.7 @serif;
-    margin: 0 0 1em 0;
+    margin: 0;
+  }
+
+  .about-content {
+    background: @contrast-2020;
+    padding: 20px 50px;
   }
 
   .credits {
@@ -34,3 +52,29 @@ main.about {
     }
   }
 }
+
+.vertical-triangle(@height, @polygon) {
+
+  background: @contrast-2020;
+  width: 100%;
+  transform: translate(-50%, 0);
+  left: 50%;
+  position: relative;
+  padding-bottom: @height;
+
+  &:after {
+    background: @header-2020;
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    padding-bottom: 10px;
+    padding-bottom: @height;
+    -webkit-clip-path: @polygon;
+    clip-path: @polygon;
+  }
+}
+
+// there is a weird rendering gap that requires a 2% overlap to the flat side of the polygon
+.triangle-down { .vertical-triangle(28px, polygon(0% -2%, 100% -2%, 50% 100%) ); }
+.triangle-up { .vertical-triangle(28px, polygon(0% 102%, 100% 102%, 50% 0%) ); }

@@ -4,7 +4,7 @@
     <%= t.include("partials/_head.html", grunt.data.json) %>
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
-  <body>
+  <body class="about-page">
 
     <header class="hero">
       <!-- <a href="https://npr.org/books" class="books-home">
@@ -20,13 +20,19 @@
     </header>
 
     <main class="about">
-      <%= t.renderMarkdown(archieml.about.content.replace(/\n/g, '<br>')) %>
+      <div class="triangle-down"></div>
+      <div class="about-content">
+        <div>
+          <%= t.renderMarkdown(archieml.about.content.replace(/\n/g, '<br>')) %>
 
-      <% if (archieml.about.credits) { %>
-      <div class="credits">
-        <%= t.renderMarkdown(archieml.about.credits) %>
+          <% if (archieml.about.credits) { %>
+          <div class="credits">
+            <%= t.renderMarkdown(archieml.about.credits) %>
+          </div>
+          <% } %>
+        </div>
       </div>
-      <% } %>
+      <div class="triangle-up"></div>
     </main>
 
     <%= t.include("partials/_footer.html", { content: t.include("_footer.html"), project: grunt.data.json.project }) %>
