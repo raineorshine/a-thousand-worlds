@@ -76,7 +76,8 @@ module.exports = function(grunt) {
         var isKeyed = header.indexOf("key") > -1;
         var isValued = header.indexOf("value") > -1;
         var out = isKeyed ? {} : [];
-        for (var row of values) {
+        for (var i=0; i<values.length; i++) {
+          const row = values[i]
           // skip blank rows
           if (!row.length) continue;
           var obj = {};
@@ -85,6 +86,7 @@ module.exports = function(grunt) {
             if (key[0] == "_" || !key) return;
             obj[key] = cast(value);
           });
+          if (!obj.id) obj.id = i + 1
           if (isKeyed) {
             out[obj.key] = isValued ? obj.value : obj;
           } else {
