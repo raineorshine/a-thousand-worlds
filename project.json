@@ -1,7 +1,7 @@
 {
   "surge": {
     "stage": "athousandworlds-staging.surge.sh",
-    "live": "athousandworlds.surge.sh"
+    "live": "athousandworlds.org"
   },
   "s3": {
     "stage": {
