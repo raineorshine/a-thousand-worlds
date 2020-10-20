@@ -73,6 +73,13 @@ module.exports = function(grunt) {
         var { values } = response.data;
         if (!values) continue;
         var header = values.shift();
+
+        // replace "summary" with "text"
+        const summaryIndex = header.indexOf('summary')
+        if (summaryIndex !== -1) {
+          header[summaryIndex] = 'text'
+        }
+
         var isKeyed = header.indexOf("key") > -1;
         var isValued = header.indexOf("value") > -1;
         var out = isKeyed ? {} : [];
@@ -85,8 +92,21 @@ module.exports = function(grunt) {
             var key = header[i];
             if (key[0] == "_" || !key) return;
             obj[key] = cast(value);
+
+            // normalize tags from comma-delimited to pipe-delimited
+            if (key === 'tags' && value.includes && value.includes(',')) {
+              obj[key] = obj[key].replace(/\s*,\s*/g, '|')
+            }
           });
+
+          // autoincrement id if there is no id column
           if (!obj.id) obj.id = i + 1
+
+          // TEMPORARY: force year to 2020 since year tabs have been removed
+          if (obj.year) {
+            obj.year = 2020
+          }
+
           if (isKeyed) {
             out[obj.key] = isValued ? obj.value : obj;
           } else {
