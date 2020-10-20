@@ -32,5 +32,6 @@
     "about": "1g3OpdB8cW05fPISpTPZiRAaRPK_j0FtGKzTxX-NKHv4"
   },
   "embedded": false,
-  "production": true
+  "production": true,
+  "coming-soon": false
 }

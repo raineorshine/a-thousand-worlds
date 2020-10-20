@@ -2,6 +2,7 @@
 <html lang="en-US">
   <head>
     <%
+      const comingSoon = grunt.data.json.project['coming-soon']
       var project = Object.assign({}, grunt.data.json.project, {
         title: json.copy.socialTitle,
         description: json.copy.socialDescription
@@ -10,8 +11,12 @@
     <%= t.include("partials/_head.html", { project }) %>
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
-  <body data-mode="covers">
 
+  <body <% if (comingSoon) { %>class="coming-soon-page"<% } %> data-mode="covers">
+
+    <% if (comingSoon) { %>
+      <%= t.include("_coming-soon.html") %>
+    <% } else { %>
     <header class="hero">
       <!-- <a href="https://npr.org/books" class="books-home">
         Diverse Picture Book Finder
@@ -93,6 +98,8 @@
     </main>
 
     <%= t.include("partials/_footer.html", { content: t.include("_footer.html"), project: grunt.data.json.project }) %>
+
+    <% } %>
 
     <script>
 window.conciergeData = {
