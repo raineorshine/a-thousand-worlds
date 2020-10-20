@@ -1,3 +1,15 @@
+.hide-below(@width) {
+  @media (max-width: ~"@{width}px") {
+    .hide-below-@{width} { display: none; }
+  }
+}
+
+.hide-above(@width) {
+  @media (min-width: ~"@{width}px") {
+    .hide-above-@{width} { display: none; }
+  }
+}
+
 .about-page {
   background: @header-2020;
 
@@ -7,6 +19,7 @@
 
   footer {
     background: @header-2020;
+    border: none;
     .npr ul {
       color: white;
     }
@@ -15,7 +28,8 @@
 
 main.about {
   padding: 33px 20px;
-  margin: auto 50px;
+  margin: auto;
+  max-width: 1187px;
 
   h2 {
     .gotham();
@@ -27,14 +41,29 @@ main.about {
   p + h2 { margin-top: 1.5em; }
 
   p, li {
-    font: 17px/1.7 @serif;
-    margin: 0;
+    .din();
+    font-weight: bold;
+    font-size: 19.5px;
+    margin-bottom: 20px;
   }
 
   .about-content {
     background: @contrast-2020;
-    padding: 20px 50px;
+    padding: 25px 50px 1px;
   }
+
+  .about-text-highlighted {
+    font-family: "Arial Black", Arial, sans-serif;
+    font-weight: bold;
+    line-height: 1;
+  }
+
+  .hide-below(1165);
+  .hide-below(1135);
+  .hide-below(1100);
+  .hide-below(972);
+  .hide-below(900);
+  .hide-above(725);
 
   .credits {
     border-top: 1px solid #999;
