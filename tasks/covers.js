@@ -3,6 +3,7 @@ var fs = require("fs").promises;
 var qs = require("querystring");
 var cheerio = require("cheerio");
 var bookcovers = require("bookcovers");
+var sharp = require('sharp');
 
 var getEndpoint = query => `http://images.btol.com/ContentCafe/Jacket.aspx?${qs.stringify(query)}`;
 
@@ -58,8 +59,8 @@ module.exports = function(grunt) {
       bookcoversResult.openLibrary.small
     console.log(`Fetching book cover: ${url}`)
     const response = await fetch(url);
-    const contents = await response.buffer();
-    return { contents, url };
+    const buffer = await response.buffer();
+    return { buffer, url };
   };
 
   var getCovers = async function(books) {
@@ -70,11 +71,20 @@ module.exports = function(grunt) {
       console.log(`Requesting books ${i}-${i + limit - 1}`);
       var batch = books.slice(i, i + limit);
       var requests = batch.map(async function(book) {
-        const pathWithoutExtension = `src/assets/covers/${book.isbn}`
-        if (grunt.file.exists(pathWithoutExtension + '.jpg') || grunt.file.exists(pathWithoutExtension + '.webp')) return true;
-        const { contents, url } = await getCoverFromBookcovers(book);
-        const path = pathWithoutExtension + (url.includes('amazon.com') ? '.webp' : '.jpg')
-        await fs.writeFile(path, contents);
+        const path = `src/assets/covers/${book.isbn}.jpg`
+        if (grunt.file.exists(path) || grunt.file.exists(path)) return true;
+        const { buffer, url } = await getCoverFromBookcovers(book);
+
+        // Amazon images are in the WebP image format. Safari and iOS only added support in June 2020. 85% of global users have support at time of writing. See https://caniuse.com/webp.
+        // Use sharp to convert to jpg. See https://github.com/lovell/sharp.
+        const isWebp = url.includes('amazon.com')
+        if (isWebp) {
+          await sharp(buffer).toFile(path)
+        }
+        else {
+          await fs.writeFile(path, contents);
+        }
+
         await wait(1000);
       });
       await Promise.all(requests);

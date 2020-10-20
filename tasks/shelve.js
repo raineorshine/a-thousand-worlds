@@ -59,8 +59,8 @@ var shelve = async function(grunt) {
       // add smart quotes to the link text
       book.links.forEach(l => l.text = typogrify(l.text));
 
-      const webpExists = grunt.file.exists(`src/assets/covers/${book.isbn}.webp`);
-      book.coverType = webpExists ? 'webp' : 'jpg'
+      // default to JPG. WebP may be used in the future.
+      book.coverType = 'jpg'
 
       var indexEntry = {
         title: book.title,
