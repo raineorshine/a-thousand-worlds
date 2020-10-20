@@ -3,6 +3,10 @@
   padding: 0;
   max-width: 800px;
 
+  @media @desktop-above {
+    max-width: 1000px;
+  }
+
   @media @mobile-above {
     padding: 0 40px 20px 40px;
   }
@@ -54,13 +58,11 @@
     float: right;
     margin-left: 11px;
     margin-bottom: 11px;
-    max-width: 100px;
     width: 33%;
 
     @media @tablet-above {
       margin-left: 16px;
       margin-bottom: 16px;
-      max-width: 240px;
     }
   }
 
