@@ -49,7 +49,7 @@ module.exports = function(grunt) {
     const bookcoversResult = await bookcovers.withIsbn(book.isbn)
     const amazonSizes = Object.keys(bookcoversResult.amazon)
     const largestAmazonCover = Math.max.apply(null, amazonSizes.map(s => parseFloat(s, 10)))
-    const url = bookcoversResult.amazon[largestAmazonCover] ||
+    const url = bookcoversResult.amazon[largestAmazonCover + 'x'] ||
       bookcoversResult.amazon['2x'] ||
       bookcoversResult.openLibrary.large ||
       bookcoversResult.amazon['1.5x'] ||
