@@ -15,6 +15,10 @@ var a = document.createElement("a");
 var slug = window.location.pathname.replace(/^\/|\/$|\/?index.html$/g, "");
 
 var track = function(eventAction, eventLabel, eventValue) {
+
+  // disable tracking
+  return
+
   var event = {
     eventAction,
     eventLabel,
