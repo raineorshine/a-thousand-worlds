@@ -12,8 +12,8 @@
     var dashify = t => t.replace(/\s+/g, "-");
   %>
   <fieldset class="tags" aria-label="Select tags">
-    <input type="checkbox" id="tag-staff-picks" value="staff picks">
-    <label for="tag-staff-picks">Staff Picks</label>
+    <!-- <input type="checkbox" id="tag-staff-picks" value="staff picks">
+    <label for="tag-staff-picks">Staff Picks</label> -->
     <% Array.from(tags).sort().filter(t => t != "staff picks").forEach(function(tag) { %>
     <input type="checkbox" id="tag-<%= dashify(tag) %>" value="<%= tag %>">
     <label for="tag-<%= dashify(tag) %>"><%= tag %></label>
