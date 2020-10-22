@@ -40,7 +40,7 @@
 
           <% if (archieml.about.credits) { %>
           <div class="credits">
-            <%= t.renderMarkdown(archieml.about.credits) %>
+            <%= t.renderMarkdown(archieml.about.credits.replace(/\n/g, '<br/>')) %>
           </div>
           <% } %>
         </div>
