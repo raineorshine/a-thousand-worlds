@@ -1,3 +1,5 @@
+@about-nowrap: ~"(min-width: 745px)";
+
 header.hero {
   // background: #4a4a4a;
   // background: #19262f;
@@ -41,13 +43,21 @@ header.hero {
 
   h1 {
     font-weight: bold;
-    font-size: 38px;
+    font-size: 30px;
     line-height: 1.0;
     margin-bottom: .1em;
     text-transform: uppercase;
 
+    @media @mobile-small-above {
+      font-size: calc(~"9.4vw - 6px");
+    }
+
     @media @mobile-above {
-      font-size: 52px;
+      font-size: calc(~"9.4vw - 5px");
+    }
+
+    @media @about-nowrap {
+      font-size: 67.5px;
     }
   }
 

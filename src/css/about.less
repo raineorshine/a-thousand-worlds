@@ -1,3 +1,5 @@
+@tagline-nowrap: ~"(min-width: 688px)";
+
 .hide-below(@width) {
   @media (max-width: ~"@{width}px") {
     .hide-below-@{width} { display: none; }
@@ -15,6 +17,18 @@
 
   header.hero {
     background: @header-2020;
+
+    h1 {
+      font-size: 30px;
+
+      @media @mobile-small-above {
+        font-size: 9.5vw;
+      }
+
+      @media @tagline-nowrap {
+        font-size: 67.5px;
+      }
+    }
   }
 
   footer {
