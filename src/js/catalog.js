@@ -10,6 +10,7 @@ var coverContainer = $.one(".catalog-covers");
 var listContainer = $.one(".catalog-list");
 var bookPanel = $.one(".book-detail");
 var bookCounter = $.one(".book-count");
+var bookCounterLabel = $.one(".book-count-label");
 
 // single book rendering
 var renderBook = async function(data) {
@@ -33,7 +34,8 @@ var filterBooks = function(books, tags) {
 };
 
 // update book counts
-var updateCounts = function(count) {
+var updateCounts = function(count, tags) {
+  bookCounterLabel.innerHTML = tags.length === 0 ? 'All books' : 'Selected books'
   bookCounter.innerHTML = count;
   document.body.setAttribute("data-count", count);
 };
@@ -61,7 +63,7 @@ var renderCovers = function(books, year, tags) {
   });
   var visible = filterBooks(books, tags);
 
-  updateCounts(visible.length);
+  updateCounts(visible.length, tags);
 
   var elements = books.map(b => b.coverElement);
 
@@ -79,7 +81,7 @@ var renderList = function(books, year, tags) {
   // but it makes sorting way easier
   var filtered = filterBooks(books, tags);
   filtered.sort((a, b) => (a.sortingTitle < b.sortingTitle ? -1 : 1));
-  updateCounts(filtered.length);
+  updateCounts(filtered.length, tags);
   listContainer.innerHTML = listTemplate({ books: filtered });
 };
 
