@@ -5,9 +5,8 @@ const ISBN = require('isbn3');
 
 var normalizeTags = function(tagString) {
   return (tagString || '')
-    .toLowerCase()
     .replace(/['’]/g, "’")
-    .split(/\s*\|\s*/)
+    .split(/\s*[|,]\s*/)
     .map(t => t.trim())
     .filter(s => s);
 };

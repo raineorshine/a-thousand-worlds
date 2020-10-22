@@ -4,17 +4,33 @@
     <%= json.copy.chatter %>
   </p>
   <%
-    // initialize tags
-    var tags = new Set();
+
+    const trim = t => t.trim()
+    const sheetTags = json.tags.map(item => item.tag.trim())
+    const sheetTagSet = new Set(sheetTags)
+
+    const bookTagSet = new Set()
     shelf.forEach(function(item) {
-      item.tags.filter(t => t.trim()).forEach(t => tags.add(t));
+      item.tags.filter(trim).forEach(t => bookTagSet.add(t))
     });
+
+    // remove tags which have no books
+    const bookTags = Array.from(bookTagSet)
+      .filter(t => bookTagSet.has(t))
+
+    // validate that the book tags are all specified in the sheet tag list
+    bookTags.forEach(t => {
+      if (!sheetTagSet.has(t)) {
+        console.error(`Tag "${t}" not found in tags sheet.`)
+      }
+    })
+
     var dashify = t => t.replace(/\s+/g, "-");
   %>
   <fieldset class="tags" aria-label="Select tags">
     <!-- <input type="checkbox" id="tag-staff-picks" value="staff picks">
     <label for="tag-staff-picks">Staff Picks</label> -->
-    <% Array.from(tags).sort().filter(t => t != "staff picks").forEach(function(tag) { %>
+    <% sheetTags.forEach(function(tag) { %>
     <input type="checkbox" id="tag-<%= dashify(tag) %>" value="<%= tag %>">
     <label for="tag-<%= dashify(tag) %>"><%= tag %></label>
     <% }); %>
