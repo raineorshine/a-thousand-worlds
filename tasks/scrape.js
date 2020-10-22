@@ -21,12 +21,12 @@ var wait = delay => new Promise(ok => setTimeout(ok, delay));
 
 var goodreads = async function(books) {
   var output = {};
-  var endpoint = "https://www.goodreads.com/search/index.xml";
+  var endpoint = "https://www.goodreads.com/book/isbn_to_id";
   for (var book of books) {
     var url = new URL(endpoint);
     var params = {
       key: process.env.GOODREADS_API_KEY,
-      q: book.isbn
+      isbn: book.isbn
     };
     for (var k in params) {
       url.searchParams.set(k, params[k]);
@@ -34,9 +34,7 @@ var goodreads = async function(books) {
     console.log(`Searching for "${book.title}" (${book.isbn}) on Goodreads...`);
     try {
       var response = await axios.get(url.toString());
-      var $ = cheerio.load(response.data);
-      var id = $("best_book id").eq(0).text();
-      output[book.id] = id;
+      output[book.id] = response.data;
     } catch (err) {
       console.log(`Unable to find ${book.title}.`, err.message);
     }
