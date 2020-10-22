@@ -8,6 +8,9 @@ You must run this task with a year parameter, it doesn't run for all sheets:
 You can also specify a particular scraper to run:
 
 `grunt content scrape --year-2019 --source=goodreads`
+
+Requires GOODREADS_API_KEY environment variable.
+
 */
 
 var axios = require("axios");
@@ -19,24 +22,34 @@ var csvStringify = util.promisify(csv.stringify);
 
 var wait = delay => new Promise(ok => setTimeout(ok, delay));
 
+const goodreadsIsbnToId = async book => {
+  const endpoint = "https://www.goodreads.com/book/isbn_to_id"
+  const url = new URL(endpoint)
+  const params = {
+    key: process.env.GOODREADS_API_KEY,
+    isbn: book.isbn
+  }
+  for (const k in params) {
+    url.searchParams.set(k, params[k])
+  }
+  console.log(`Searching for "${book.title}" (${book.isbn}) on Goodreads...`)
+  try {
+    const response = await axios.get(url.toString())
+    return response.data
+  } catch (err) {
+    console.log(`Unable to find ${book.title}.`, err.message)
+  }
+
+  return null
+}
+
 var goodreads = async function(books) {
   var output = {};
   var endpoint = "https://www.goodreads.com/book/isbn_to_id";
   for (var book of books) {
-    var url = new URL(endpoint);
-    var params = {
-      key: process.env.GOODREADS_API_KEY,
-      isbn: book.isbn
-    };
-    for (var k in params) {
-      url.searchParams.set(k, params[k]);
-    }
-    console.log(`Searching for "${book.title}" (${book.isbn}) on Goodreads...`);
-    try {
-      var response = await axios.get(url.toString());
-      output[book.id] = response.data;
-    } catch (err) {
-      console.log(`Unable to find ${book.title}.`, err.message);
+    const id = await goodreadsIsbnToId(book)
+    if (id) {
+      output[book.id] = id
     }
   }
   return output;
