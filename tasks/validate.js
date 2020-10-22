@@ -138,7 +138,7 @@ module.exports = function(grunt) {
 
   var validate = async function(tasks = null) {
 
-    var validation = { integrity, tags, badCovers, missingCovers, reviewers, reviewed, links };
+    var validation = { integrity, /*tags,*/ badCovers, missingCovers, reviewers, reviewed, links };
 
     for (var k in validation) {
       if (!tasks || tasks.indexOf(k) > -1) {
