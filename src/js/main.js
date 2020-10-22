@@ -39,6 +39,14 @@ var defaults = {
   year: 2019
 };
 
+const tagIndex = window.conciergeData.tags.reduce((accum, tag, i) => ({
+  ...accum,
+  [tag]: i
+}))
+
+const compare = (a, b) => a > b ? 1 : a < b ? -1 : 0
+const compareTags = (a, b) => compare(tagIndex[a], tagIndex[b])
+
 const isEmail = s => /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(s)
 const isTwitterHandle = s => s.startsWith('@')
 const isMissingHttp = s => !s.startsWith('http')
@@ -76,7 +84,7 @@ channel.on("hashchange", async function(params, pastParams = {}) {
     var back = hash.serialize({
       year: merged.year,
       view: merged.view,
-      tags: merged.tags,
+      tags: merged.tags.sort(compareTags),
       reset: !pastParams.year // don't restore focus if this is the starting view
     });
     // look up the reviewer from the table

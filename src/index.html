@@ -103,7 +103,8 @@
 
     <script>
 window.conciergeData = {
-  reviewers: <%= JSON.stringify(json.reviewers) %>
+  reviewers: <%= JSON.stringify(json.reviewers) %>,
+  tags: <%= JSON.stringify(json.tags.map(item => item.tag.trim())) %>,
 };
     </script>
     <script src="app.js" async></script>

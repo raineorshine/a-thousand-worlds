@@ -15,7 +15,7 @@
           item.tags.forEach(t => tags.add(t));
         });
         var capitalize = t => t.replace(/(^|\s)(\w)/g, l => l.toUpperCase());
-        Array.from(tags).sort().forEach(function(tag) { %>
+        Array.from(tags).forEach(function(tag) { %>
       <option value="<%= tag %>"><%= capitalize(tag) %></option>
         <%
         })
