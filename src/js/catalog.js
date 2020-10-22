@@ -36,7 +36,7 @@ var filterBooks = function(books, tags) {
 // update book counts
 var updateCounts = function(count, tags) {
   bookCounterLabel.innerHTML = tags.length === 0 ? 'All books' : 'Selected books'
-  bookCounter.innerHTML = count;
+  bookCounter.innerHTML = `(${count})`;
   document.body.setAttribute("data-count", count);
 };
 

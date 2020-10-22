@@ -12,7 +12,7 @@
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
 
-  <body <% if (comingSoon) { %>class="coming-soon-page"<% } %> data-mode="covers">
+  <body <% if (comingSoon) { %>class="coming-soon-page"<% } %> data-mode="covers" data-tags="0">
 
     <% if (comingSoon) { %>
       <%= t.include("_coming-soon.html") %>
@@ -74,7 +74,7 @@
           </div>
 
           <h3>
-            <span aria-live="polite"><span class="book-count-label">Selected books</span> (<span class="book-count"></span>)</span>
+            <span aria-live="polite"><span class="book-count-label">All books</span> <span class="book-count"></span></span>
             <button class="clear-filters">
               Clear filters
               <span aria-hidden="true">
