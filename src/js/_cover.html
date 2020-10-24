@@ -2,7 +2,13 @@
   var book = data.book;
   var nativeLazy = "loading" in Image.prototype;
   var aspect = book.dimensions.height ? `padding-bottom: ${book.dimensions.height / book.dimensions.width * 100}%`: "";
+
+  /** Renders an illustrator if it exists and is not the same as the author. */
+  const illustrator = book => book.illustrator && book.illustrator !== 'same'
+    ? ', illustrated by ' + book.illustrator
+    : '';
 %>
+
 <a
   href="#year=<%= book.year %>&book=<%= book.id %>"
   class="cover-link">
@@ -21,7 +27,7 @@
   <div class="hover-data">
     <div class="cover-text">
       <b><%= book.title %></b>
-      <br>by <%= book.author %>
+      <br>by <%= book.author %><%= illustrator(book) %>
     </div>
 
     <div class="read-more">

@@ -1,5 +1,11 @@
 <%
   var poorMD = text => text.replace(/\*([^*]+)\*/g, "<i>$1</i>");
+
+  /** Renders an illustrator if it exists and is not the same as the author. */
+  const illustrator = book => book.illustrator && book.illustrator !== 'same'
+    ? ', illustrated by ' + book.illustrator
+    : '';
+
 %><ul class="book-nav">
   <li class="list"><a href="#<%= data.back %>">back to list</a></li>
   <li class="previous"><a href="#<%= data.previous %>">&lsaquo; previous book</a></li>
@@ -9,7 +15,7 @@
 <img src="./assets/covers/<%= data.book.isbn %>.<%= data.book.coverType %>" class="cover" alt="">
 
 <h2 class="title" tabindex="-1"><%= data.book.title %></h2>
-<h3 class="author"><%= data.book.author %></h3>
+<h3 class="author"><%= data.book.author %><%= illustrator(data.book) %></h3>
 <ul class="tags">
   <% data.book.tags.forEach(function(t) { %>
   <li> <a href="#<%= data.hash.serialize({ year: data.book.year, tags: t, reset: true }) %>"><%= t %></a>

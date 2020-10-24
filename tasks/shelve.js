@@ -54,6 +54,7 @@ var shelve = async function(grunt) {
       var indexEntry = {
         title: book.title,
         author: book.author,
+        illustrator: book.illustrator,
         dimensions: {},
         isbn: book.isbn,
         tags: book.tags,
