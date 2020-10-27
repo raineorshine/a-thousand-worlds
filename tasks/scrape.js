@@ -34,8 +34,9 @@ const goodreadsIsbnToId = async book => {
   }
   console.log(`Searching for "${book.title}" (${book.isbn}) on Goodreads...`)
   try {
-    const response = await axios.get(url.toString())
-    return response.data
+    const { data: id } = await axios.get(url.toString())
+    console.log(`  ID: ${id}`)
+    return id
   } catch (err) {
     console.log(`Unable to find ${book.title}.`, err.message)
   }
@@ -47,7 +48,7 @@ var goodreads = async function(books) {
   var output = {};
   var endpoint = "https://www.goodreads.com/book/isbn_to_id";
   for (var book of books) {
-    const id = await goodreadsIsbnToId(book)
+    const id = book.goodreads || await goodreadsIsbnToId(book)
     if (id) {
       output[book.id] = id
     }
