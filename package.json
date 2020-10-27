@@ -1,11 +1,14 @@
 {
-  "name": "book-concierge",
-  "description": "",
-  "version": "0.0.1",
+  "name": "a-thousand-worlds",
+  "description": "Colorful Reads X Colorful People",
+  "version": "1.0.0",
   "author": "Thomas Wilburn",
+  "contributors": [
+    "Raine Revere"
+  ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/nprapps/book-concierge.git"
+    "url": "https://github.com/raineorshine/a-thousand-worlds.git"
   },
   "dependencies": {
     "@babel/core": "^7.4.3",
