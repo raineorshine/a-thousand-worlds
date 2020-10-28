@@ -1,24 +1,32 @@
 const execa = require('execa')
 const project = require('../project.json');
 
+const validTargets = Object.keys(project.surge)
+const instructions = 'Use "grunt publish:TARGET" where TARGET may be: ' + ['all', ...validTargets].join(', ')
+
 module.exports = grunt => {
-  grunt.registerTask('publish', 'Pushes the build folder to surge', async function(deploy) {
+  grunt.registerTask('publish', 'Pushes the build folder to surge', async function(target) {
 
     const done = this.async()
 
-    if (!deploy) {
-      grunt.fail.fatal('No deployment target specified. Use "grunt publish:TARGET" where TARGET may be: ' + Object.keys(project.surge).join(', '))
+    if (!target || !['all', ...validTargets].includes(target)) {
+      grunt.fail.fatal((!target
+        ? 'No deployment target specified. '
+        : `Invalid deployment target "${target}". ` ) + instructions)
     }
 
+    const targets = target === 'all' ? validTargets : [target]
+
     // publish to surge and pipe output to stdout
-    try {
-      const surgeProcess = execa('surge', ['build', project.surge[deploy]])
-      surgeProcess.stdout.pipe(process.stdout)
-      await surgeProcess
-    }
-    catch(e) {
-      process.exit(1)
-    }
+    await Promise.all(targets.map(async target => {
+      try {
+        const { stdout } = await execa('surge', ['build', project.surge[target]])
+        console.log(stdout)
+      }
+      catch(e) {
+        process.exit(1)
+      }
+    }))
 
     done()
 
