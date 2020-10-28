@@ -97,6 +97,11 @@ module.exports = function(grunt) {
             if (key === 'tags' && value.includes && value.includes(',')) {
               obj[key] = obj[key].replace(/\s*,\s*/g, '|')
             }
+
+            // replace newlines in summary with <br>
+            if (key === 'text' && value && value.replace) {
+              obj[key] = obj[key].replace(/\n/g, '<br/>')
+            }
           });
 
           // autoincrement id if there is no id column
