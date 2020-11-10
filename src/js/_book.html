@@ -27,7 +27,7 @@
     <b>Recommended by</b>
     &mdash;
     <% if (data.reviewer.link) { %>
-    <a href="<%= data.reviewer.link %>"><%= data.book.reviewer %></a>,
+    <a target="_blank" href="<%= data.reviewer.link %>"><%= data.book.reviewer %></a>,
     <% } else { %>
     <%= data.book.reviewer %>,
     <% } %>
