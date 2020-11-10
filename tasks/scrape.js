@@ -180,12 +180,15 @@ module.exports = function(grunt) {
 
     var year = grunt.option("year");
     var sources = grunt.option("source");
-    if (typeof sources == "string") {
+    if (!sources) {
+      sources = ['goodreads']
+    }
+    else if (typeof sources == "string") {
       sources = [sources];
     }
 
     if (!year) {
-      grunt.fail.fatal("Please provide a --year parameter to scrape");
+      year = 2020
     }
 
     var books = grunt.data.shelf.filter(b => b.year == year);
